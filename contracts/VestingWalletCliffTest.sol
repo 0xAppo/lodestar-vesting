@@ -16,7 +16,7 @@ import "./Context.sol";
  * Consequently, if the vesting has already started, any amount of tokens sent to this contract will (at least partly)
  * be immediately releasable.
  */
-contract VestingWalletCliff is Context {
+contract VestingWalletCliffTest is Context {
     event EtherReleased(uint256 amount);
     event ERC20Released(address indexed token, uint256 amount);
 
@@ -26,9 +26,9 @@ contract VestingWalletCliff is Context {
     uint64 private immutable _start;
     uint64 private immutable _duration;
 
-    uint64 private immutable yearInSeconds = 31536000;
+    uint64 private immutable cliffTime = 600;
 
-    uint256 private immutable cliffAllocation = 480000000000000000000000;
+    uint256 private immutable cliffAllocation = 400000000000000000000;
 
     /**
      * @dev Set the beneficiary, start timestamp and vesting duration of the vesting wallet.
@@ -144,7 +144,7 @@ contract VestingWalletCliff is Context {
     function _vestingSchedule(uint256 totalAllocation, uint64 timestamp) internal view virtual returns (uint256) {
         if (timestamp < start()) {
             return 0;
-        } else if (timestamp < start() + yearInSeconds) {
+        } else if (timestamp < start() + cliffTime) {
             return 0;
         } else if (timestamp > start() + duration()) {
             return totalAllocation;

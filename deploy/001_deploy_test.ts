@@ -11,11 +11,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   //Waffle's vesting contract consists of a linear vest of 200,000 LODE tokens 
   //over the course of 1 year. 
 
-  var duration = "31536000";
+  var duration = "3600";
 
   console.log("duration in seconds", duration);
 
-  const durationYears = 31536000 / (3.154e7);
+  const durationYears = 3600 / (3.154e7);
   console.log("duration in years", durationYears);
 
   function calculateStart(currentTime: Date): Date {
@@ -32,15 +32,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const startReadable = new Date(start);
 
-  console.log(startReadable);
+  console.log(start);
 
   console.log(admin);
 
 
 
-  const Waffle = await deploy('Waffle', {
+  const Waffle = await deploy('Test', {
     from: deployer,
-    contract: 'VestingWalletLinear',
+    contract: 'VestingWalletCliffTest',
     args: [
         admin,
         start,
@@ -51,4 +51,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 };
 export default func;
-func.tags = ['Waffle'];
+func.tags = ['Test'];

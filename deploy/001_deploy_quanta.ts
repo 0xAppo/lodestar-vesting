@@ -8,8 +8,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deploy} = deployments;
   const {deployer, admin} = await getNamedAccounts();
 
-  //Waffle's vesting contract consists of a linear vest of 200,000 LODE tokens 
-  //over the course of 1 year. 
+  //Quanta's vesting contract consists of a linear vest of 1,200,000 LODE tokens 
+  //over the course of 18 months. There is a cliff after one year of 40% of the total
+  //allocation or 480,000 tokens.
 
   var duration = "31536000";
 
@@ -38,9 +39,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 
 
-  const Waffle = await deploy('Waffle', {
+  const Waffle = await deploy('Quanta', {
     from: deployer,
-    contract: 'VestingWalletLinear',
+    contract: 'VestingWalletCliff',
     args: [
         admin,
         start,
@@ -51,4 +52,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 };
 export default func;
-func.tags = ['Waffle'];
+func.tags = ['Quanta'];
