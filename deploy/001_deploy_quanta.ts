@@ -6,17 +6,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deployments, getNamedAccounts} = hre;
   const {deploy} = deployments;
-  const {deployer, admin} = await getNamedAccounts();
+  const {deployer, quanta} = await getNamedAccounts();
 
   //Quanta's vesting contract consists of a linear vest of 1,200,000 LODE tokens 
   //over the course of 18 months. There is a cliff after one year of 40% of the total
   //allocation or 480,000 tokens.
 
-  var duration = "31536000";
+  var duration = "78840000"; //18 months in seconds
 
   console.log("duration in seconds", duration);
 
-  const durationYears = 31536000 / (3.154e7);
+  const durationYears = 78840000 / (3.154e7);
   console.log("duration in years", durationYears);
 
   function calculateStart(currentTime: Date): Date {
@@ -33,9 +33,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const startReadable = new Date(start);
 
-  console.log(startReadable);
+  console.log("Start time is: ", start);
 
-  console.log(admin);
+  console.log("Readable Start Time is: ", startReadable);
+
+  console.log("Beneficiary Address for Quanta is: ", quanta);
 
 
 
@@ -43,7 +45,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     contract: 'VestingWalletCliff',
     args: [
-        admin,
+        quanta,
         start,
         duration,
     ],

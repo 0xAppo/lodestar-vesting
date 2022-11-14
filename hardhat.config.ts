@@ -3,10 +3,8 @@ import "@nomicfoundation/hardhat-toolbox";
 import 'dotenv/config';
 import "hardhat-deploy";
 
-console.log(process.env.WAFFLE);
-
 const config: HardhatUserConfig = {
-  defaultNetwork: 'arbitrumgoerli',
+  defaultNetwork: 'arbitrum',
   solidity: {
     version: '0.8.10',
     settings: {
@@ -25,7 +23,8 @@ const config: HardhatUserConfig = {
     waffle: `${process.env.WAFFLE}`,
     appo: `${process.env.APPO}`,
     quanta: `${process.env.QUANTA}`,
-    coopes: `${process.env.COOPES}`
+    coopes: `${process.env.COOPES}`,
+    employee: `${process.env.EMPLOYEE_FUND}`
   },
   networks: {
     hardhat: {

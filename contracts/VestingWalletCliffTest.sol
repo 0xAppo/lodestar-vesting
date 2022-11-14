@@ -26,9 +26,9 @@ contract VestingWalletCliffTest is Context {
     uint64 private immutable _start;
     uint64 private immutable _duration;
 
-    uint64 private immutable cliffTime = 600;
+    uint64 private immutable cliffTime = 120;
 
-    uint256 private immutable cliffAllocation = 400000000000000000000;
+    uint256 private immutable cliffAllocation = 480000000000000000000000;
 
     /**
      * @dev Set the beneficiary, start timestamp and vesting duration of the vesting wallet.
@@ -149,7 +149,7 @@ contract VestingWalletCliffTest is Context {
         } else if (timestamp > start() + duration()) {
             return totalAllocation;
         } else {
-            return cliffAllocation + ((3 * totalAllocation / 5) * (timestamp - start())) / duration();
+            return cliffAllocation + (((3 * totalAllocation / 5) * (timestamp - start() - cliffTime)) / (3 * duration() / 5));
         }
     }
 }

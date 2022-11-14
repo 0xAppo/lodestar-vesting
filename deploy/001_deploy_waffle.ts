@@ -6,26 +6,27 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {deployments, getNamedAccounts} = hre;
   const {deploy} = deployments;
-  const {deployer, admin} = await getNamedAccounts();
+  const {deployer, waffle} = await getNamedAccounts();
 
-  const quanta = process.env.QUANTA;
-  const beneficiary = quanta?.toString();
+  //Waffle's vesting contract consists of a linear vest of 200,000 LODE tokens 
+  //over the course of 1 year. 
 
-  //testing cliff vesting contract
-
-  var duration = "300"; //5 minute total vest time for test
+  var duration = "31536000"; //one year in seconds
 
   console.log("duration in seconds", duration);
 
-  const durationYears = 300 / (3.154e7);
+  const durationYears = 31536000 / (3.154e7);
   console.log("duration in years", durationYears);
 
+
+  //Start time is ~10 minutes following deployment to allow for time to send vesting tokens to contract
   function calculateStart(currentTime: Date): Date {
     const result = new Date(currentTime);
     result.setTime(result.getTime() + 300000);
     return result;
   }
 
+  //Current time
   const currentTime = new Date();
 
   const date = calculateStart(currentTime);  
@@ -34,19 +35,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const startReadable = new Date(start);
 
-  console.log("UNIX Start Time is:", start);
+  console.log("Start Time is: ", start);
 
-  console.log("Readable Start Time is:", startReadable);
+  console.log("Readable Start Time is: ", startReadable);
 
-  console.log(admin);
+  console.log("Benefificary Address for Waffle is: ", waffle);
 
 
 
-  const Waffle = await deploy('Test', {
+  const Waffle = await deploy('Waffle', {
     from: deployer,
-    contract: 'VestingWalletCliffTest',
+    contract: 'VestingWalletLinear',
     args: [
-        beneficiary,
+        waffle,
         start,
         duration,
     ],
@@ -55,4 +56,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 };
 export default func;
-func.tags = ['Test'];
+func.tags = ['Waffle'];

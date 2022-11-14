@@ -149,7 +149,7 @@ contract VestingWalletCliff is Context {
         } else if (timestamp > start() + duration()) {
             return totalAllocation;
         } else {
-            return cliffAllocation + ((3 * totalAllocation / 5) * (timestamp - start())) / duration();
+            return cliffAllocation + ((3 * totalAllocation / 5) * (timestamp - start() - yearInSeconds)) / (3 * duration() / 5);
         }
     }
 }
